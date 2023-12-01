@@ -5,7 +5,7 @@
   #body
 ]
 
-#let appendix = (..args) => heading(supplement: [Appendix], numbering: "A", ..args)
+#let appendix = (..args) => heading(supplement: [Appendix], numbering: "A.", ..args)
 
 #let day = (day, solved-parts: 0) => [
   #pagebreak()
