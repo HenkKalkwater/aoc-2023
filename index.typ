@@ -11,5 +11,4 @@ https://adventofcode.com/
 #outline(depth: 3)
 
 #aoc.day(1, solved-parts: 2)
-#aoc.day(2)
-#aoc.day(3)
+#aoc.day(2, solved-parts: 2)
