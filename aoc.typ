@@ -7,6 +7,29 @@
 
 #let appendix = (..args) => heading(supplement: [Appendix], numbering: "A.", ..args)
 
+#let day-part = (day, part, input-file, visualise: false) => [
+  #let story-file = "parts/day-" + str(day) + "-" + str(part) + "-story.typ"
+  #let file = "parts/day-" + str(day) + "-" + str(part) + ".typ"
+  #let input = read(input-file)
+  == Part #{part}
+  #include story-file
+
+  #import file: solve
+  #let answ = solve(input)
+  #if type(answ) == dictionary and answ.at("value", default: none) != none [
+    My answer is: #raw(repr(answ.at("value")))
+
+    #if visualise [
+      #answ.at("visualisation", default: [])
+    ]
+  ] else [
+    My answer is: #raw(repr(answ))
+  ]
+
+  The source code for the answer is:
+  #raw(read(file), lang: "typ", block: true)
+]
+
 #let day = (day, solved-parts: 0) => [
   #pagebreak()
   #let date_disp = (c) => datetime(year: year, month: 12, day: c).display("[weekday], [day padding:none] [month repr:long]")
@@ -17,27 +40,8 @@
   = #date_disp(day)
   #let input-file = "parts/day-" + str(day) + "-input.txt"
 
-  #for part in range(solved-parts) [
-    #let story-file = "parts/day-" + str(day) + "-" + str(part + 1) + "-story.typ"
-    #let file = "parts/day-" + str(day) + "-" + str(part + 1) + ".typ"
-    #let input = read(input-file)
-    == Part #{part + 1}
-    #include story-file
-
-    #import file: solve
-    #let answ = solve(input)
-    #if type(answ) == dictionary and answ.at("value", default: none) != none [
-      My answer is: #raw(repr(answ.at("value")))
-
-      #answ.at("visualisation", default: [])
-    ] else [
-      My answer is: #raw(repr(answ))
-    ]
-
-    The source code for the answer is:
-    #raw(read(file), lang: "typ", block: true)
-
-
+  #for part in range(1, solved-parts + 1) [
+    #day-part(day, part, input-file)
   ]
 
   #if solved-parts == 0 [
@@ -59,6 +63,7 @@
     stars[Both parts of this puzzle are complete! They provide two gold stars: \*\*]
   }
 ]
+
 
 
 #let template = (title: "", year: 2023, body) => [
