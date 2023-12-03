@@ -26,7 +26,13 @@
 
     #import file: solve
     #let answ = solve(input)
-    My answer is: #raw(repr(answ))
+    #if type(answ) == dictionary and answ.at("value", default: none) != none [
+      My answer is: #raw(repr(answ.at("value")))
+
+      #answ.at("visualisation", default: [])
+    ] else [
+      My answer is: #raw(repr(answ))
+    ]
 
     The source code for the answer is:
     #raw(read(file), lang: "typ", block: true)

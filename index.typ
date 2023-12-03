@@ -12,3 +12,4 @@ https://adventofcode.com/
 
 #aoc.day(1, solved-parts: 2)
 #aoc.day(2, solved-parts: 2)
+#aoc.day(3, solved-parts: 1)
