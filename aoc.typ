@@ -5,7 +5,9 @@
   #body
 ]
 
-#let appendix = (..args) => heading(supplement: [Appendix], numbering: "A.", ..args)
+#let date-disp = (c) => datetime(year: year, month: 12, day: c).display("[weekday], [day padding:none] [month repr:long]")
+#let appendix-numbering = (..args) => [Appendix #numbering("A:", ..args)]
+#let appendix = (..args) => heading(supplement: [Appendix], numbering: appendix-numbering, ..args)
 
 #let day-part = (day, part, input-file, visualise: false) => [
   #let story-file = "parts/day-" + str(day) + "-" + str(part) + "-story.typ"
@@ -32,12 +34,11 @@
 
 #let day = (day, solved-parts: 0) => [
   #pagebreak()
-  #let date_disp = (c) => datetime(year: year, month: 12, day: c).display("[weekday], [day padding:none] [month repr:long]")
   #metadata((
     day: day,
     input: solved-parts > 0
   )) <day-meta>
-  = #date_disp(day)
+  = #date-disp(day)
   #let input-file = "parts/day-" + str(day) + "-input.txt"
 
   #for part in range(1, solved-parts + 1) [
@@ -52,7 +53,8 @@
       #if appendices == () [
         To begin, #link("https://adventofcode.com/" + str(year) + "/day/" + str(day) + "/input")[get your puzzle input]
       ] else [
-        The input is available in #repr(appendices.at(day - 1))
+        #let number = numbering("A.", day)
+        The puzzle input can be found in #link(appendices.at(day - 1).location())[Appendix #number]
       ]
     ])
   }
@@ -143,7 +145,7 @@
       let input = day-meta.value.at("input", default: none)
       let day = day-meta.value.at("day")
       if input [
-        #appendix[Input for #day]
+        #appendix[Input for #date-disp(day)]
         #raw(read("parts/day-" + str(day) + "-input.txt"), block: true)
       ]
     }
