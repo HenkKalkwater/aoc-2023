@@ -99,11 +99,38 @@
     outset: (x: 0.25em)
   )
 
-  #show raw.where(block: true): block.with(
-    fill: rgb("#10101a"),
-    stroke: rgb("#333340"),
-    inset: (x: 1em, y: 1em),
+  #let raw-line-disp = it-line => style(
+    styles => box(
+      grid(
+        columns: 2,
+        rows: 1,
+        column-gutter: 1em,
+        box(
+          width: measure([#it-line.count], styles).width,
+          [
+            #set align(right)
+            #set text(fill: rgb("#ffff88"))
+            #(str(it-line.number) + " ")
+          ]
+        ),
+        it-line.body
+      )
+    )
   )
+
+  #show raw.where(block: true): it-raw => block(
+      fill: rgb("#10101a"),
+      stroke: rgb("#333340"),
+      inset: (x: 1em, y: 1em),
+      if it-raw.lang != none [
+        #show raw.line: raw-line-disp
+        #it-raw
+      ] else [
+        #it-raw
+      ]
+  )
+
+
 
   #heading(title, numbering: none, outlined: false)
 
