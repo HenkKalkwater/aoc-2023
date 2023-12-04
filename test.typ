@@ -5,8 +5,8 @@
 )
 
 #let year = 2023
-#let day = 3
-#let part = 2
+#let day = 4
+#let part = 1
 #let test = false
 #let visualise = true
 
